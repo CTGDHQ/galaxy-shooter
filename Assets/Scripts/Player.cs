@@ -221,6 +221,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void RefillAmmo()
+    {
+        _shotsRemaining = 15;
+        _audioSource.clip = _laserSoundClip;
+        _uIManager.UpdateAmmoCount(_shotsRemaining);
+    }
+
     public void AddToScore(int points)
     {
         _score += points;
