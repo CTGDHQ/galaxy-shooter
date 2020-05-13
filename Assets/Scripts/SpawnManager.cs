@@ -54,7 +54,7 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(randomTime);
             var spawnPos = new Vector3(Random.Range(-9.37f, 9.37f), 7f);
 
-            var selectedPowerup = Random.Range(0, 4);
+            var selectedPowerup = Random.Range(0, 5);
 
             if (_powerUps[selectedPowerup] != null)
             {

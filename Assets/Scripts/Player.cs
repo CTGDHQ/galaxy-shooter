@@ -176,22 +176,7 @@ public class Player : MonoBehaviour
             _lives--;
             _uIManager.UpdateLives(_lives);
 
-            switch (_lives)
-            {
-                case 2:
-                    _rightEngine.SetActive(true);
-                    break;
-                case 1:
-                    _leftEngine.SetActive(true);
-                    break;
-                case 0:
-                default:
-                    _lives = 0;
-                    _spawnManager.OnPlayerDeath();
-                    _uIManager.EnableGameOverText();
-                    Destroy(this.gameObject);
-                    break;
-            }
+            UpdateEngineVisuals();
         }
     }
 
@@ -226,6 +211,39 @@ public class Player : MonoBehaviour
         _shotsRemaining = 15;
         _audioSource.clip = _laserSoundClip;
         _uIManager.UpdateAmmoCount(_shotsRemaining);
+    }
+
+    public void UpdateEngineVisuals()
+    {
+        switch (_lives)
+        {
+            case 3:
+                _rightEngine.SetActive(false);
+                _leftEngine.SetActive(false);
+                break;
+            case 2:
+                _rightEngine.SetActive(true);
+                _leftEngine.SetActive(false);
+                break;
+            case 1:
+                _leftEngine.SetActive(true);
+                break;
+            case 0:
+            default:
+                _lives = 0;
+                _spawnManager.OnPlayerDeath();
+                _uIManager.EnableGameOverText();
+                Destroy(this.gameObject);
+                break;
+        }
+    }
+
+    public void GainHealth()
+    {
+        _lives++;
+        _lives = Mathf.Min(_lives, 3);
+        _uIManager.UpdateLives(_lives);
+        UpdateEngineVisuals();
     }
 
     public void AddToScore(int points)

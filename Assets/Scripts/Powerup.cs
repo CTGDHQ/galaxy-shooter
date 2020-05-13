@@ -14,7 +14,8 @@ public class Powerup : MonoBehaviour
         tripleShot,
         speed,
         shield,
-        ammo
+        ammo,
+        health
     }
 
     [SerializeField] private PowerUpID _powerUpType;
@@ -66,6 +67,10 @@ public class Powerup : MonoBehaviour
 
                     case PowerUpID.ammo:
                         player.RefillAmmo();
+                        break;
+
+                    case PowerUpID.health:
+                        player.GainHealth();
                         break;
                 }
             }
