@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int _shieldDurability = 3;
 
     [SerializeField] private int _lives = 3;
+    [SerializeField] private int _shotsRemaining = 15;
 
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject _leftEngine, _rightEngine;
    
     [SerializeField] private AudioClip _laserSoundClip;
+    [SerializeField] private AudioClip _emptyAmmoSoundClip;
     private AudioSource _audioSource;
 
     [SerializeField]
@@ -112,21 +114,32 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-            _canFire = Time.time + _fireRate;
-
-            var laserPos = transform.position;
-
-            if (!_canTripleShot)
+            if (_shotsRemaining > 0)
             {
-                laserPos.y += 0.7f;
-                Instantiate(_laserPrefab, laserPos, Quaternion.identity);
+                _canFire = Time.time + _fireRate;
+                _shotsRemaining--;
+
+                _uIManager.UpdateAmmoCount(_shotsRemaining);
+
+                var laserPos = transform.position;
+
+                if (!_canTripleShot)
+                {
+                    laserPos.y += 0.7f;
+                    Instantiate(_laserPrefab, laserPos, Quaternion.identity);
+                }
+                else
+                {
+                    Instantiate(_tripleShotPrefab, laserPos, Quaternion.identity);
+                }
+
+                _audioSource.Play();
             }
             else
             {
-                Instantiate(_tripleShotPrefab, laserPos, Quaternion.identity);
-            }
-
-            _audioSource.Play();
+                _audioSource.clip = _emptyAmmoSoundClip;
+                _audioSource.Play();
+            } 
         }
     }
 
