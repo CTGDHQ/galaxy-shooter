@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
    
     [SerializeField] private AudioClip _laserSoundClip;
     [SerializeField] private AudioClip _emptyAmmoSoundClip;
+    [SerializeField] private GameObject _camera;
+    private CameraShake _cameraShake;
     private AudioSource _audioSource;
 
     [SerializeField]
@@ -49,6 +51,7 @@ public class Player : MonoBehaviour
         _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
         _shieldVisualizationRenderer = _shieldVisualization.GetComponent<SpriteRenderer>();
+        _cameraShake = _camera.GetComponent<CameraShake>();
 
         if (_spawnManager == null)
         {
@@ -72,6 +75,11 @@ public class Player : MonoBehaviour
         if (_shieldVisualizationRenderer == null)
         {
             Debug.LogError("Shield Visualization Renderer is null!");
+        }
+
+        if (_cameraShake == null)
+        {
+            Debug.LogError("Camera Shake is null!");
         }
     }
 
@@ -106,9 +114,6 @@ public class Player : MonoBehaviour
             _thrusterCharge = Mathf.Min(_thrusterCharge, 1f);
             _uIManager.UpdateThrusterGauge(_thrusterCharge);
         }
-
-
-        Debug.Log(_thrusterCharge);
     }
     
     private void Movement()
@@ -209,10 +214,13 @@ public class Player : MonoBehaviour
         else
         {
             _lives--;
+            _lives = Mathf.Max(_lives, 0);
             _uIManager.UpdateLives(_lives);
 
             UpdateEngineVisuals();
         }
+
+        _cameraShake.ShakeCamera();
     }
 
     public void EnableTripleShot()
