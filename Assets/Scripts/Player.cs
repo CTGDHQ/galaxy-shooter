@@ -12,11 +12,14 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
 
+    [SerializeField] private int _shieldDurability = 3;
+
     [SerializeField] private int _lives = 3;
 
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
     [SerializeField] private GameObject _shieldVisualization;
+    private SpriteRenderer _shieldVisualizationRenderer;
     [SerializeField] private GameObject _leftEngine, _rightEngine;
    
     [SerializeField] private AudioClip _laserSoundClip;
@@ -41,6 +44,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
+        _shieldVisualizationRenderer = _shieldVisualization.GetComponent<SpriteRenderer>();
 
         if (_spawnManager == null)
         {
@@ -59,6 +63,11 @@ public class Player : MonoBehaviour
         else
         {
             _audioSource.clip = _laserSoundClip;
+        }
+
+        if (_shieldVisualizationRenderer == null)
+        {
+            Debug.LogError("Shield Visualization Renderer is null!");
         }
     }
 
@@ -125,32 +134,51 @@ public class Player : MonoBehaviour
     {
         if (_shieldEnabled)
         {
-            _shieldEnabled = false;
-            if (_shieldVisualization != null)
+            _shieldDurability--;
+            _shieldDurability = Mathf.Max(0, _shieldDurability);
+
+            var shieldColor = _shieldVisualizationRenderer.color;
+
+            switch (_shieldDurability)
             {
+                case 2:
+                    shieldColor.a = 0.5f;
+                    _shieldVisualizationRenderer.color = shieldColor;
+                    break;
+                case 1:
+                    shieldColor.a = 0.15f;
+                    _shieldVisualizationRenderer.color = shieldColor;
+                    break;
+            }
+
+            if (_shieldDurability <= 0)
+            {
+                _shieldEnabled = false;
                 _shieldVisualization.SetActive(false);
             }
-            return;
         }
 
-        _lives--;
-        _uIManager.UpdateLives(_lives);
-
-        switch (_lives)
+        else
         {
-            case 2:
-                _rightEngine.SetActive(true);
-                break;
-            case 1:
-                _leftEngine.SetActive(true);
-                break;
-            case 0:
-            default:
-                _lives = 0;
-                _spawnManager.OnPlayerDeath();
-                _uIManager.EnableGameOverText();
-                Destroy(this.gameObject);
-                break;
+            _lives--;
+            _uIManager.UpdateLives(_lives);
+
+            switch (_lives)
+            {
+                case 2:
+                    _rightEngine.SetActive(true);
+                    break;
+                case 1:
+                    _leftEngine.SetActive(true);
+                    break;
+                case 0:
+                default:
+                    _lives = 0;
+                    _spawnManager.OnPlayerDeath();
+                    _uIManager.EnableGameOverText();
+                    Destroy(this.gameObject);
+                    break;
+            }
         }
     }
 
@@ -172,7 +200,11 @@ public class Player : MonoBehaviour
         _shieldEnabled = true;
         if (_shieldVisualization != null)
         {
+            _shieldDurability = 3;
             _shieldVisualization.SetActive(true);
+            var shieldColor = _shieldVisualizationRenderer.color;
+            shieldColor.a = 1;
+            _shieldVisualizationRenderer.color = shieldColor;
         }
     }
 
