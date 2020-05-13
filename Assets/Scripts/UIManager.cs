@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _restartText;
 
+    [SerializeField]
+    private Slider _thrusterGauge;
+
     private GameManager _gameManager;
     
     // Start is called before the first frame update
@@ -46,6 +49,11 @@ public class UIManager : MonoBehaviour
     public void UpdateAmmoCount(int ammo)
     {
         _ammoText.text = "Ammo: " + ammo;
+    }
+
+    public void UpdateThrusterGauge(float val)
+    {
+        _thrusterGauge.value = val;
     }
 
     public void UpdateLives(int currentLives)

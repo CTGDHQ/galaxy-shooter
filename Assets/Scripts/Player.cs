@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private int _lives = 3;
     [SerializeField] private int _shotsRemaining = 15;
+    [SerializeField] private float _thrusterCharge;
 
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
@@ -35,7 +36,7 @@ public class Player : MonoBehaviour
     private UIManager _uIManager;
 
     [SerializeField] private bool _canTripleShot, _canBurstShot;
-    private bool _speedBoostEnabled;
+    private bool _speedBoostEnabled, _thrusterBoostEnabled;
     private bool _shieldEnabled;
 
     [SerializeField]
@@ -77,8 +78,37 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ThrusterBoost();
         Movement();
         Shoot();
+    }
+    
+    private void ThrusterBoost()
+    {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (_thrusterCharge > 0)
+            {
+                _thrusterBoostEnabled = true;
+                _thrusterCharge -= 0.9f * Time.deltaTime;
+                _uIManager.UpdateThrusterGauge(_thrusterCharge);
+                _thrusterCharge = Mathf.Max(_thrusterCharge, 0f);
+            }
+            else
+            {
+                _thrusterBoostEnabled = false;
+            }
+        }
+        else
+        {
+            _thrusterBoostEnabled = false;
+            _thrusterCharge += 0.45f * Time.deltaTime;
+            _thrusterCharge = Mathf.Min(_thrusterCharge, 1f);
+            _uIManager.UpdateThrusterGauge(_thrusterCharge);
+        }
+
+
+        Debug.Log(_thrusterCharge);
     }
     
     private void Movement()
@@ -87,7 +117,7 @@ public class Player : MonoBehaviour
         var verticalInput = Input.GetAxis("Vertical");
         var direction = new Vector3(horizontalInput, verticalInput, 0f);
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (_thrusterBoostEnabled)
         {
             transform.Translate(direction * (_speed + _shiftKeyBoost) * Time.deltaTime);
         }
