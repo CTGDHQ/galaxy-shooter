@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.5f;
+    [SerializeField] private float _shiftKeyBoost;
 
     [SerializeField]
     private float _fireRate = 0.5f;
@@ -67,14 +68,21 @@ public class Player : MonoBehaviour
         Movement();
         Shoot();
     }
-
+    
     private void Movement()
     {
         var horizontalInput = Input.GetAxis("Horizontal");
         var verticalInput = Input.GetAxis("Vertical");
         var direction = new Vector3(horizontalInput, verticalInput, 0f);
 
-        transform.Translate(direction * _speed * Time.deltaTime);
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            transform.Translate(direction * (_speed + _shiftKeyBoost) * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(direction * _speed * Time.deltaTime);
+        }
 
         var posX = transform.position.x;
         var posY = transform.position.y;
