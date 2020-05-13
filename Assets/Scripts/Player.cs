@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleShotPrefab;
+    [SerializeField] private GameObject _burstShotPrefab;
     [SerializeField] private GameObject _shieldVisualization;
     private SpriteRenderer _shieldVisualizationRenderer;
     [SerializeField] private GameObject _leftEngine, _rightEngine;
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour
     private SpawnManager _spawnManager;
     private UIManager _uIManager;
 
-    private bool _canTripleShot;
+    [SerializeField] private bool _canTripleShot, _canBurstShot;
     private bool _speedBoostEnabled;
     private bool _shieldEnabled;
 
@@ -123,14 +124,18 @@ public class Player : MonoBehaviour
 
                 var laserPos = transform.position;
 
-                if (!_canTripleShot)
+                if (_canTripleShot)
                 {
                     laserPos.y += 0.7f;
-                    Instantiate(_laserPrefab, laserPos, Quaternion.identity);
+                    Instantiate(_tripleShotPrefab, laserPos, Quaternion.identity);
+                }
+                else if (_canBurstShot)
+                {
+                    Instantiate(_burstShotPrefab, laserPos, Quaternion.identity);
                 }
                 else
                 {
-                    Instantiate(_tripleShotPrefab, laserPos, Quaternion.identity);
+                    Instantiate(_laserPrefab, laserPos, Quaternion.identity);
                 }
 
                 _audioSource.Play();
@@ -184,6 +189,14 @@ public class Player : MonoBehaviour
     {
         _canTripleShot = true;
         StartCoroutine(TripleShotPowerDownRoutine());
+    }
+
+    public void EnableBurstShot()
+    {
+        _canBurstShot = true;
+        //Take priority over triple shot.
+        _canTripleShot = false;
+        StartCoroutine(BurstShotPowerDownRoutine());
     }
 
     public void EnableSpeedBoost()
@@ -256,6 +269,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         _canTripleShot = false;
+    }
+
+    private IEnumerator BurstShotPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        _canBurstShot = false;
     }
 
     private IEnumerator SpeedBoostPowerDownRoutine()

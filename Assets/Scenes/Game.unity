@@ -1314,12 +1314,14 @@ MonoBehaviour:
     type: 3}
   _enemyContainer: {fileID: 1321096190}
   stopSpawning: 0
-  _powerUps:
-  - {fileID: 5971811294649152176, guid: 73e3b6ca2429e5b4ca19003a9c941c23, type: 3}
-  - {fileID: 1918449699318522416, guid: cb8310c628de7894a8472f6fd2c9fd18, type: 3}
-  - {fileID: 850287522419631797, guid: 8675c60b56bbf404cb41a03f6a57156c, type: 3}
+  _commonPowerUps:
   - {fileID: 5205415301882849484, guid: ae958704917b69845a09b88d9cc51a67, type: 3}
   - {fileID: 1643100743437155330, guid: 42710aec19ea2e040b3b1602a6b889eb, type: 3}
+  - {fileID: 850287522419631797, guid: 8675c60b56bbf404cb41a03f6a57156c, type: 3}
+  - {fileID: 5971811294649152176, guid: 73e3b6ca2429e5b4ca19003a9c941c23, type: 3}
+  - {fileID: 1918449699318522416, guid: cb8310c628de7894a8472f6fd2c9fd18, type: 3}
+  _rarePowerUps:
+  - {fileID: 8340803355979876136, guid: 0b83f01a9902e2f4fbe5cc87c0831c2e, type: 3}
 --- !u!4 &1472829388
 Transform:
   m_ObjectHideFlags: 0
@@ -1377,12 +1379,16 @@ MonoBehaviour:
     type: 3}
   _tripleShotPrefab: {fileID: 3259628963102362336, guid: c2d43c8c30dc1994b8f650f36c02e240,
     type: 3}
+  _burstShotPrefab: {fileID: 4734510117038840035, guid: aa76fb6c1181fa74188dbe7ab08b85bd,
+    type: 3}
   _shieldVisualization: {fileID: 947109036}
   _leftEngine: {fileID: 1217788805}
   _rightEngine: {fileID: 711034943}
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _emptyAmmoSoundClip: {fileID: 8300000, guid: 2cc155b6dac1fc6499dceac7b2052ad6, type: 3}
   _score: 0
+  _canTripleShot: 0
+  _canBurstShot: 0
   _speedBoostMultiplier: 2
 --- !u!212 &1639851053
 SpriteRenderer:

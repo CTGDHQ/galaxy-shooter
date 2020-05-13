@@ -14,7 +14,8 @@ public class SpawnManager : MonoBehaviour
     private bool stopSpawning;
 
     [SerializeField]
-    private GameObject[] _powerUps;
+    private GameObject[] _commonPowerUps;
+    [SerializeField] private GameObject[] _rarePowerUps;
     
     // Start is called before the first frame update
     void Start()
@@ -54,11 +55,22 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(randomTime);
             var spawnPos = new Vector3(Random.Range(-9.37f, 9.37f), 7f);
 
-            var selectedPowerup = Random.Range(0, 5);
+            // For rarity sake, grab a random value. Common items spawn 70% of the time
 
-            if (_powerUps[selectedPowerup] != null)
+            var itemRarity = Random.value;
+
+            if (itemRarity < 0.9f) //90% chance
             {
-                Instantiate(_powerUps[selectedPowerup], spawnPos, Quaternion.identity);
+                var selectedPowerup = Random.Range(0, _commonPowerUps.Length); //select a random powerup from the 70% group
+                if (_commonPowerUps[selectedPowerup] != null)
+                {
+                    Instantiate(_commonPowerUps[selectedPowerup], spawnPos, Quaternion.identity);
+                }
+            }
+            else //30% chance
+            {
+                // For now, just spawn the "rare" Burstshot powerup
+                Instantiate(_rarePowerUps[0], spawnPos, Quaternion.identity);
             }
         }
     }
