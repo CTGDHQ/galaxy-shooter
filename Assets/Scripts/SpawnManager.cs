@@ -15,7 +15,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField]
     private GameObject[] _commonPowerUps;
-    [SerializeField] private GameObject[] _rarePowerUps;
+    [SerializeField] private GameObject[] _rarePowerUps, _uncommonPowerUps;
 
     [SerializeField] private EnemyWave[] _enemyWaves;
 
@@ -103,18 +103,30 @@ public class SpawnManager : MonoBehaviour
 
             var itemRarity = Random.value;
 
-            if (itemRarity < 0.9f) //90% chance
+            
+            if (itemRarity >= 0.5f)
             {
-                var selectedPowerup = Random.Range(0, _commonPowerUps.Length); //select a random powerup from the 70% group
+                var selectedPowerup = Random.Range(0, _commonPowerUps.Length);
                 if (_commonPowerUps[selectedPowerup] != null)
                 {
                     Instantiate(_commonPowerUps[selectedPowerup], spawnPos, Quaternion.identity);
                 }
             }
-            else //30% chance
+            else if (itemRarity >= 0.2f)
             {
-                // For now, just spawn the "rare" Burstshot powerup
-                Instantiate(_rarePowerUps[0], spawnPos, Quaternion.identity);
+                var selectedPowerup = Random.Range(0, _uncommonPowerUps.Length);
+                if (_uncommonPowerUps[selectedPowerup] != null)
+                {
+                    Instantiate(_uncommonPowerUps[selectedPowerup], spawnPos, Quaternion.identity);
+                }
+            }
+            else //rare
+            {
+                var selectedPowerup = Random.Range(0, _rarePowerUps.Length); 
+                if (_rarePowerUps[selectedPowerup] != null)
+                {
+                    Instantiate(_rarePowerUps[selectedPowerup], spawnPos, Quaternion.identity);
+                }
             }
         }
     }

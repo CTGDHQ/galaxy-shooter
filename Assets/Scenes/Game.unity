@@ -1715,13 +1715,14 @@ MonoBehaviour:
   stopSpawning: 0
   _commonPowerUps:
   - {fileID: 5205415301882849484, guid: ae958704917b69845a09b88d9cc51a67, type: 3}
+  _rarePowerUps:
   - {fileID: 1643100743437155330, guid: 42710aec19ea2e040b3b1602a6b889eb, type: 3}
+  - {fileID: 8340803355979876136, guid: 0b83f01a9902e2f4fbe5cc87c0831c2e, type: 3}
+  _uncommonPowerUps:
   - {fileID: 850287522419631797, guid: 8675c60b56bbf404cb41a03f6a57156c, type: 3}
-  - {fileID: 5971811294649152176, guid: 73e3b6ca2429e5b4ca19003a9c941c23, type: 3}
   - {fileID: 1918449699318522416, guid: cb8310c628de7894a8472f6fd2c9fd18, type: 3}
   - {fileID: 4932945043935874280, guid: a4c0c858b208c0a4b8f0dad55d80ae4f, type: 3}
-  _rarePowerUps:
-  - {fileID: 8340803355979876136, guid: 0b83f01a9902e2f4fbe5cc87c0831c2e, type: 3}
+  - {fileID: 5971811294649152176, guid: 73e3b6ca2429e5b4ca19003a9c941c23, type: 3}
   _enemyWaves:
   - {fileID: 11400000, guid: 5ce6a6ff8f34b354a89e737802b145af, type: 2}
   - {fileID: 11400000, guid: 8121a091808414a44b90149ebffe0970, type: 2}
