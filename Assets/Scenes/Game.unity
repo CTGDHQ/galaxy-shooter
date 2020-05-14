@@ -1721,6 +1721,16 @@ MonoBehaviour:
   - {fileID: 1918449699318522416, guid: cb8310c628de7894a8472f6fd2c9fd18, type: 3}
   _rarePowerUps:
   - {fileID: 8340803355979876136, guid: 0b83f01a9902e2f4fbe5cc87c0831c2e, type: 3}
+  _enemyWaves:
+  - {fileID: 11400000, guid: 5ce6a6ff8f34b354a89e737802b145af, type: 2}
+  - {fileID: 11400000, guid: 8121a091808414a44b90149ebffe0970, type: 2}
+  - {fileID: 11400000, guid: 9aa3a337bb443f142a560d3900f4aba2, type: 2}
+  - {fileID: 11400000, guid: 55c6a8167bf4e6040b57b5b37c711e94, type: 2}
+  - {fileID: 11400000, guid: d86b8df875bb183408fa5c94b993070e, type: 2}
+  - {fileID: 11400000, guid: 938cf6d41a04f5c4ca87bd9cacfc550c, type: 2}
+  _enemiesRemaining: 0
+  _enemiesToSpawn: 0
+  _currentWave: 0
 --- !u!4 &1472829388
 Transform:
   m_ObjectHideFlags: 0

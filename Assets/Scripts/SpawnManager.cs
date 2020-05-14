@@ -16,11 +16,26 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject[] _commonPowerUps;
     [SerializeField] private GameObject[] _rarePowerUps;
-    
+
+    [SerializeField] private EnemyWave[] _enemyWaves;
+
+    [SerializeField] private int _enemiesRemaining, _enemiesToSpawn, _currentWave;
+
+    private float _spawnTime;
+
+    public static SpawnManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _enemiesRemaining = _enemyWaves[0]._enemyCount;
+        _enemiesToSpawn = _enemiesRemaining;
+        _spawnTime = _enemyWaves[0]._spawnTime;
     }
 
     public void StartSpawning()
@@ -29,11 +44,38 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnPowerupRoutine());
     }
 
+    public void EnemyDestroyed()
+    {
+        _enemiesRemaining--;
+
+        if (_enemiesRemaining <= 0)
+        {
+            _currentWave++;
+            if (_currentWave < (_enemyWaves.Length))
+            {
+                _enemiesToSpawn = _enemyWaves[_currentWave]._enemyCount;
+                _enemiesRemaining = _enemiesToSpawn;
+                _spawnTime = _enemyWaves[_currentWave]._spawnTime;
+                Debug.Log("New Wave! Current Wave: " + (_currentWave + 1));
+                StartCoroutine(SpawnEnemyRoutine());
+            }
+            else
+            {
+                Debug.Log("All waves destroyed! LOOPING");
+                _currentWave--;
+                _enemiesToSpawn = _enemyWaves[_currentWave]._enemyCount;
+                _enemiesRemaining = _enemiesToSpawn;
+                _spawnTime = _enemyWaves[_currentWave]._spawnTime;
+                StartCoroutine(SpawnEnemyRoutine());
+            }
+        }
+    }
+
     private IEnumerator SpawnEnemyRoutine()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
-        while (!stopSpawning)
+        while (!stopSpawning && _enemiesToSpawn > 0)
         {
             var spawnPos = new Vector3(Random.Range(-9.37f, 9.37f), 7f);
             
@@ -43,7 +85,9 @@ public class SpawnManager : MonoBehaviour
                 newEnemy.transform.parent = _enemyContainer.transform;
             }
 
-            yield return new WaitForSeconds(5f);
+            _enemiesToSpawn--;
+
+            yield return new WaitForSeconds(_spawnTime);
         }
     }
 
