@@ -13,16 +13,19 @@ public class Enemy : MonoBehaviour
 
     private AudioSource _audioSource;
 
-    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _laserPrefab, _thickLaserPrefab;
     private float _fireRate = 3.0f;
 
     private float _canFire = -1f;
 
-    private int _movementType;
+    private int _movementType, _laserType;
 
     private float _targetLeft, _targetRight;
 
     private bool _moveLeft = true;
+
+    private SpriteRenderer _spriteRenderer;
+    private Color _spriteColor;
 
     private void Start()
     {
@@ -30,7 +33,18 @@ public class Enemy : MonoBehaviour
         _animator = gameObject.GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
 
-        _movementType = Random.Range(0, 2);
+        _movementType = Random.Range(0, 3);
+        _laserType = Random.Range(0, 5);
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _spriteColor = _spriteRenderer.color;
+
+        if (_laserType == 0)
+        {
+            _movementType = 2;
+            _spriteColor.b = 0;
+            _spriteRenderer.color = _spriteColor;
+        }
 
         SetMovementTargets();
     }
@@ -97,6 +111,30 @@ public class Enemy : MonoBehaviour
                     }
                 }
                 break;
+            case 2:
+                if (_moveLeft)
+                {
+                    if (transform.position.x > _targetLeft)
+                    {
+                        transform.Translate(new Vector3(-1f * (_speed * 1.3f) * Time.deltaTime, -1f * _speed * Time.deltaTime, 0f));
+                    }
+                    else
+                    {
+                        _moveLeft = false;
+                    }
+                }
+                else
+                {
+                    if (transform.position.x < _targetRight)
+                    {
+                        transform.Translate(new Vector3(1f * (_speed * 1.3f) * Time.deltaTime, -1f * _speed * Time.deltaTime, 0f));
+                    }
+                    else
+                    {
+                        _moveLeft = true;
+                    }
+                }
+                break;
         }
     }
 
@@ -106,7 +144,14 @@ public class Enemy : MonoBehaviour
         {
             _fireRate = Random.Range(3.0f, 7.0f);
             _canFire = (Time.time + _fireRate);
-            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            if (_laserType != 0)
+            {
+                Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            }
+            else
+            {
+                Instantiate(_thickLaserPrefab, transform.position, Quaternion.identity);
+            }
         }
     }
 
