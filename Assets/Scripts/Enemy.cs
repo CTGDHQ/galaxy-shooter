@@ -17,12 +17,12 @@ public class Enemy : MonoBehaviour
     private float _fireRate = 3.0f;
 
     private float _canFire = -1f;
-
     private int _movementType, _laserType;
-
     private float _targetLeft, _targetRight;
-
     private bool _moveLeft = true;
+
+    [SerializeField] private GameObject _shieldVisualization;
+    private bool _hasShield;
 
     private SpriteRenderer _spriteRenderer;
     private Color _spriteColor;
@@ -36,6 +36,12 @@ public class Enemy : MonoBehaviour
         _movementType = Random.Range(0, 3);
         _laserType = Random.Range(0, 5);
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        if (Random.Range(0, 5) == 2)
+        {
+            _hasShield = true;
+            _shieldVisualization.SetActive(true);
+        }
 
         _spriteColor = _spriteRenderer.color;
 
@@ -164,24 +170,42 @@ public class Enemy : MonoBehaviour
                 _player.Damage();
             }
 
-            _animator.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _audioSource.Play();
-            SpawnManager.Instance.EnemyDestroyed();
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.8f);
+            if (_hasShield)
+            {
+                _shieldVisualization.SetActive(false);
+                _hasShield = false;
+            }
+            else
+            {
+                _animator.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _audioSource.Play();
+                SpawnManager.Instance.EnemyDestroyed();
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.8f);
+            }
+            
         }
         else if (other.CompareTag("Laser"))
         {
-            Destroy(other.gameObject);
-            _player.AddToScore(10);
+            if (_hasShield)
+            {
+                _shieldVisualization.SetActive(false);
+                _hasShield = false;
+                Destroy(other.gameObject);
+            }
+            else
+            {
+                Destroy(other.gameObject);
+                _player.AddToScore(10);
 
-            _animator.SetTrigger("OnEnemyDeath");
-            _speed = 0;
-            _audioSource.Play();
-            SpawnManager.Instance.EnemyDestroyed();
-            Destroy(GetComponent<Collider2D>());
-            Destroy(this.gameObject, 2.8f);
+                _animator.SetTrigger("OnEnemyDeath");
+                _speed = 0;
+                _audioSource.Play();
+                SpawnManager.Instance.EnemyDestroyed();
+                Destroy(GetComponent<Collider2D>());
+                Destroy(this.gameObject, 2.8f);
+            }
         }
     }
 }
