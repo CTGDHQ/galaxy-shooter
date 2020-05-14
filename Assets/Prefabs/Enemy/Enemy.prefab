@@ -51,6 +51,8 @@ MonoBehaviour:
   _speed: 4
   _laserPrefab: {fileID: 232863245286561340, guid: 3e38d7730d4ccf84d85859cbc68ee828,
     type: 3}
+  _pointA: {fileID: 0}
+  _pointB: {fileID: 0}
 --- !u!212 &7867678439552319082
 SpriteRenderer:
   m_ObjectHideFlags: 0
