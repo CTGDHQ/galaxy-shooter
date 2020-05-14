@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         _scoreText.text = "Score: 0";
-        _ammoText.text = "Ammo: 15";
+        _ammoText.text = "Ammo: 15 / 15";
         _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
         if (_gameManager == null)
@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
 
     public void UpdateAmmoCount(int ammo)
     {
-        _ammoText.text = "Ammo: " + ammo;
+        _ammoText.text = "Ammo: " + ammo + " / 15";
     }
 
     public void UpdateThrusterGauge(float val)
