@@ -6,6 +6,9 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.5f;
+
+    private float _defaultSpeed;
+
     [SerializeField] private float _shiftKeyBoost;
 
     [SerializeField]
@@ -47,6 +50,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _defaultSpeed = _speed;
         _spawnManager = GameObject.Find("Spawn Manager").GetComponent<SpawnManager>();
         _uIManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
@@ -244,6 +248,12 @@ public class Player : MonoBehaviour
         StartCoroutine(SpeedBoostPowerDownRoutine());
     }
 
+    public void EnableSpeedDown()
+    {
+        _speed /= 4;
+        StartCoroutine(SpeedDownPowerDownRoutine());
+    }
+
     public void EnableShield()
     {
         _shieldEnabled = true;
@@ -320,6 +330,12 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5f);
         _speedBoostEnabled = false;
         _speed /= _speedBoostMultiplier;
+    }
+
+    private IEnumerator SpeedDownPowerDownRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        _speed = _defaultSpeed;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
