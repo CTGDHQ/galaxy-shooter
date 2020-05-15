@@ -25,6 +25,8 @@ public class SpawnManager : MonoBehaviour
 
     public static SpawnManager Instance;
 
+    [SerializeField] private GameObject _bossPrefab;
+
     private void Awake()
     {
         Instance = this;
@@ -61,12 +63,7 @@ public class SpawnManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("All waves destroyed! LOOPING");
-                _currentWave--;
-                _enemiesToSpawn = _enemyWaves[_currentWave]._enemyCount;
-                _enemiesRemaining = _enemiesToSpawn;
-                _spawnTime = _enemyWaves[_currentWave]._spawnTime;
-                StartCoroutine(SpawnEnemyRoutine());
+                Instantiate(_bossPrefab, new Vector3(0f, 10f, 0f), Quaternion.identity);
             }
         }
     }

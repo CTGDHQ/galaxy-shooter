@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Enemy Laser
   - Powerup Magnet
+  - Boss
+  - Mega Laser
   layers:
   - Default
   - TransparentFX

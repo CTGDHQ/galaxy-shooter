@@ -345,5 +345,9 @@ public class Player : MonoBehaviour
             Destroy(other.transform.parent.gameObject);
             Damage();
         }
+        else if (other.CompareTag("Mega Laser"))
+        {
+            Damage();
+        }
     }
 }

@@ -42,7 +42,6 @@ public class Laser : MonoBehaviour
         }
     }
         
-
     private void Movement()
     {
         if (!_isEnemyLaser)
