@@ -88,4 +88,15 @@ public class Powerup : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Powerup Magnet"))
+        {
+            if (Input.GetKey(KeyCode.C))
+            {
+                transform.position = Vector2.MoveTowards(transform.position, other.transform.position, (_speed * 2) * Time.deltaTime);
+            }
+        }
+    }
 }
