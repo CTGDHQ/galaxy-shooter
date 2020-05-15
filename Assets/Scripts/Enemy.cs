@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     private int _movementType, _laserType;
     private float _targetLeft, _targetRight;
     private bool _moveLeft = true;
+    private bool _isAgressive;
 
     [SerializeField] private GameObject _shieldVisualization;
     private bool _hasShield;
@@ -206,6 +207,27 @@ public class Enemy : MonoBehaviour
                 Destroy(GetComponent<Collider2D>());
                 Destroy(this.gameObject, 2.8f);
             }
+        }
+    }
+
+    public void SetAgressive()
+    {
+        _isAgressive = true;
+        StartCoroutine(BumpPlayer());
+    }
+
+    private IEnumerator BumpPlayer()
+    {
+        var elapsed = 0f;
+        var duration = 0.5f;
+        while (elapsed < duration)
+        {
+            if (_player != null)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, _player.transform.position, _speed * Time.deltaTime);
+                elapsed += Time.deltaTime;
+            }
+            yield return null;
         }
     }
 }
